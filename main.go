@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"hash/fnv"
 	"math"
 	"net"
@@ -31,7 +32,7 @@ func maxSequence() int64 {
 }
 
 func timestamp() int64 {
-	return time.Now().UnixNano() - int64(customEpoch)
+	return time.Now().Unix()*1000 - int64(customEpoch)
 }
 
 func waitTillNextTimestamp(currentTimestamp int64) int64 {
@@ -92,6 +93,7 @@ func nextID() int64 {
 }
 
 func main() {
+	fmt.Println(time.Now().Unix())
 	r := gin.Default()
 
 	r.GET("/next", func(c *gin.Context) {
