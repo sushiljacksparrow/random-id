@@ -2,11 +2,12 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"hash/fnv"
 	"math"
 	"net"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // generates 64 bit Ids out of which first 42 bits are timestamp, 10 bits are node
@@ -91,8 +92,15 @@ func nextID() int64 {
 }
 
 func main() {
-	// generate 10 random Ids for test
-	for i := 0; i < 10; i++ {
-		fmt.Println(nextID())
+	r := gin.Default()
+
+	r.GET("/next", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": nextID(),
+		})
+	})
+
+	if err := r.Run(":8080"); err != nil {
+		panic(err)
 	}
 }
